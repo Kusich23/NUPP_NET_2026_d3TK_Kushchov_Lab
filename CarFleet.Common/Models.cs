@@ -51,9 +51,26 @@ namespace CarFleet.Common
         public string BodyType { get; set; }
         public bool IsElectric { get; set; }
 
+        private static readonly Random _random = new Random();
+        private static readonly string[] _brands = { "Tesla", "Toyota", "BMW", "Audi", "Ford" };
+
         public Car(string brand, int year, int passengerCapacity) : base(brand, year)
         {
             PassengerCapacity = passengerCapacity;
+        }
+
+        // Статичний метод для генерації випадкових об'єктів згідно завдання
+        public static Car CreateNew()
+        {
+            string randomBrand = _brands[_random.Next(_brands.Length)];
+            int randomYear = _random.Next(2000, 2024);
+            int randomCapacity = _random.Next(2, 8);
+            
+            return new Car(randomBrand, randomYear, randomCapacity)
+            {
+                BodyType = "Sedan",
+                IsElectric = _random.Next(0, 2) == 1
+            };
         }
     }
 
@@ -64,9 +81,22 @@ namespace CarFleet.Common
         public int NumberOfAxles { get; set; }
         public bool HasTrailer { get; set; }
 
+        private static readonly Random _random = new Random();
+        private static readonly string[] _brands = { "Volvo", "MAN", "Scania", "DAF" };
+
         public Truck(string brand, int year, double cargoCapacity) : base(brand, year)
         {
             CargoCapacity = cargoCapacity;
+        }
+
+        // Статичний метод для генерації випадкових вантажівок
+        public static Truck CreateNew()
+        {
+            string randomBrand = _brands[_random.Next(_brands.Length)];
+            int randomYear = _random.Next(2010, 2024);
+            double randomCapacity = _random.NextDouble() * 20.0 + 5.0; // від 5 до 25 тонн
+            
+            return new Truck(randomBrand, randomYear, Math.Round(randomCapacity, 1));
         }
     }
 

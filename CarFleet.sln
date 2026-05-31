@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarFleet.Common", "CarFleet
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarFleet.Console", "CarFleet.Console\CarFleet.Console.csproj", "{48839BA4-93E7-48B8-88FE-C2FEEEED74AC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarFleet.Tests", "CarFleet.Tests\CarFleet.Tests.csproj", "{D124CA02-7CCE-4ED1-9055-902397062EBC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,5 +45,17 @@ Global
 		{48839BA4-93E7-48B8-88FE-C2FEEEED74AC}.Release|x64.Build.0 = Release|Any CPU
 		{48839BA4-93E7-48B8-88FE-C2FEEEED74AC}.Release|x86.ActiveCfg = Release|Any CPU
 		{48839BA4-93E7-48B8-88FE-C2FEEEED74AC}.Release|x86.Build.0 = Release|Any CPU
+		{D124CA02-7CCE-4ED1-9055-902397062EBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D124CA02-7CCE-4ED1-9055-902397062EBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D124CA02-7CCE-4ED1-9055-902397062EBC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D124CA02-7CCE-4ED1-9055-902397062EBC}.Debug|x64.Build.0 = Debug|Any CPU
+		{D124CA02-7CCE-4ED1-9055-902397062EBC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D124CA02-7CCE-4ED1-9055-902397062EBC}.Debug|x86.Build.0 = Debug|Any CPU
+		{D124CA02-7CCE-4ED1-9055-902397062EBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D124CA02-7CCE-4ED1-9055-902397062EBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D124CA02-7CCE-4ED1-9055-902397062EBC}.Release|x64.ActiveCfg = Release|Any CPU
+		{D124CA02-7CCE-4ED1-9055-902397062EBC}.Release|x64.Build.0 = Release|Any CPU
+		{D124CA02-7CCE-4ED1-9055-902397062EBC}.Release|x86.ActiveCfg = Release|Any CPU
+		{D124CA02-7CCE-4ED1-9055-902397062EBC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
