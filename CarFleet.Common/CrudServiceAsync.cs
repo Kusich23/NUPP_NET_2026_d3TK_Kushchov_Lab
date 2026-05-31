@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.IO;
@@ -9,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace CarFleet.Common
 {
-    // Інтерфейс строго за методичкою
-    public interface ICrudServiceAsync<T> : IEnumerable<T>
+    // Оновлений інтерфейс строго за методичкою (без IEnumerable<T>)
+    public interface ICrudServiceAsync<T>
     {
         public Task<bool> CreateAsync(T element);
         public Task<T> ReadAsync(Guid id);
@@ -21,10 +20,9 @@ namespace CarFleet.Common
         public Task<bool> SaveAsync();
     }
 
-    // Реалізація сервісу (Thread-safe, Пагінація, Асинхронність)
+    // Стара реалізація (залишаємо її робочою, просто прибираємо методи IEnumerator)
     public class CrudServiceAsync<T> : ICrudServiceAsync<T> where T : IIdentifiable
     {
-        // Thread-safe колекція (Багатопотоково-безпечна)
         private readonly ConcurrentDictionary<Guid, T> _items = new ConcurrentDictionary<Guid, T>();
         private readonly string _filePath;
 
@@ -50,7 +48,6 @@ namespace CarFleet.Common
             return Task.FromResult<IEnumerable<T>>(_items.Values.ToList());
         }
 
-        // Пагінація
         public Task<IEnumerable<T>> ReadAllAsync(int page, int amount)
         {
             var pagedData = _items.Values
@@ -76,7 +73,6 @@ namespace CarFleet.Common
             return Task.FromResult(removed);
         }
 
-        // Асинхронне збереження у файл
         public async Task<bool> SaveAsync()
         {
             try
@@ -90,9 +86,5 @@ namespace CarFleet.Common
                 return false;
             }
         }
-
-        // Реалізація IEnumerable<T>
-        public IEnumerator<T> GetEnumerator() => _items.Values.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }
