@@ -2,18 +2,22 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization; // ДОДАНО: Простір імен для авторизації
 using CarFleet.Common;
 using CarFleet.Infrastructure.Models;
 using CarFleet.REST.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace CarFleet.REST.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    // ДОДАНО: Тепер весь контролер за замовчуванням вимагає наявності токена (авторизації)
+    [Authorize] 
     public class CarsController : ControllerBase
     {
         private readonly ICrudServiceAsync<CarModel> _carService;
-        private readonly ICrudServiceAsync<FleetModel> _fleetService; // Додали сервіс автопарків
+        private readonly ICrudServiceAsync<FleetModel> _fleetService;
 
         public CarsController(ICrudServiceAsync<CarModel> carService, ICrudServiceAsync<FleetModel> fleetService)
         {
@@ -21,6 +25,7 @@ namespace CarFleet.REST.Controllers
             _fleetService = fleetService;
         }
 
+        // Доступно всім авторизованим користувачам (навіть зі звичайною роллю "User", бо на рівні класу стоїть [Authorize])
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -32,11 +37,12 @@ namespace CarFleet.REST.Controllers
                 Year = c.Year,
                 PassengerCapacity = c.PassengerCapacity,
                 BodyType = c.BodyType,
-                FleetId = c.Fleet?.Id ?? 0 // Безпечно дістаємо ID автопарку
+                FleetId = c.Fleet?.Id ?? 0 
             });
             return Ok(result);
         }
 
+        // Доступно всім авторизованим користувачам
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -55,10 +61,11 @@ namespace CarFleet.REST.Controllers
             return Ok(result);
         }
 
+        // ДОДАНО: Створювати можуть тільки Адміни або Менеджери
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager")] 
         public async Task<IActionResult> Create(CarRestModel carRest)
         {
-            // 1. Шукаємо автопарк за переданим FleetId
             var allFleets = await _fleetService.ReadAllAsync();
             var targetFleet = allFleets.FirstOrDefault(f => f.Id == carRest.FleetId);
 
@@ -67,7 +74,6 @@ namespace CarFleet.REST.Controllers
                 return BadRequest("Автопарк із таким FleetId не знайдено! Спочатку створіть автопарк.");
             }
 
-            // 2. Створюємо машину і прив'язуємо її до знайденого автопарку
             var newCar = new CarModel
             {
                 Id = Guid.NewGuid(),
@@ -75,14 +81,16 @@ namespace CarFleet.REST.Controllers
                 Year = carRest.Year,
                 PassengerCapacity = carRest.PassengerCapacity,
                 BodyType = carRest.BodyType,
-                Fleet = targetFleet // Прив'язуємо!
+                Fleet = targetFleet 
             };
 
             await _carService.CreateAsync(newCar);
             return CreatedAtAction(nameof(GetById), new { id = newCar.Id }, carRest);
         }
 
+        // ДОДАНО: Видаляти може ТІЛЬКИ Адмін
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var car = await _carService.ReadAsync(id);
