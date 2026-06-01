@@ -17,8 +17,9 @@ namespace CarFleet.Infrastructure
         // Налаштування підключення до SQLite
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // Файл бази даних буде створено локально під назвою carfleet.db
-            optionsBuilder.UseSqlite("Data Source=carfleet.db");
+            // Вказуємо АБСОЛЮТНИЙ шлях. 
+            // Тепер усі проєкти (Console, REST, MVC) будуть писати і читати один і той самий файл!
+            optionsBuilder.UseSqlite(@"Data Source=/Users/maksserdiuk/NUPP_NET_2026_d3TK_Kushchov_Lab/CarFleet.Infrastructure/carfleet.db");
         }
 
         // Використання Fluent API для налаштування зв'язків та наслідування

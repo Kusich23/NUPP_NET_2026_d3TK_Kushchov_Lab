@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CarFleet.Common;
-using CarFleet.Infrastructure.Models;
 
 namespace CarFleet.Infrastructure
 {
-    // Цей сервіс використовує патерн Репозиторій для доступу до БД
-    public class DbCrudServiceAsync<T> : ICrudServiceAsync<T> where T : VehicleModel
+    // Тепер сервіс приймає БУДЬ-ЯКИЙ клас бази даних (where T : class)
+    public class DbCrudServiceAsync<T> : ICrudServiceAsync<T> where T : class
     {
         private readonly IRepository<T> _repository;
 
@@ -26,7 +25,8 @@ namespace CarFleet.Infrastructure
         public async Task<T> ReadAsync(Guid id)
         {
             var all = await _repository.GetAllAsync();
-            return all.FirstOrDefault(x => x.Id == id);
+            // Використовуємо dynamic, щоб гнучко порівнювати ID (і Guid для машин, і int для автопарків)
+            return all.FirstOrDefault(x => ((dynamic)x).Id.ToString() == id.ToString());
         }
 
         public async Task<IEnumerable<T>> ReadAllAsync()
@@ -54,7 +54,6 @@ namespace CarFleet.Infrastructure
 
         public Task<bool> SaveAsync()
         {
-            // Репозиторій вже зберігає дані автоматично (через SaveChangesAsync)
             return Task.FromResult(true);
         }
     }
