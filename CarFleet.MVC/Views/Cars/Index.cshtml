@@ -1,0 +1,32 @@
+@model IEnumerable<CarFleet.Infrastructure.Models.CarModel>
+
+@{
+    ViewData["Title"] = "Список Автомобілів";
+}
+
+<h1>Автомобілі в Базі Даних</h1>
+
+<p>
+    <a asp-action="Create">Створити нову машину</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Бренд</th>
+            <th>Рік випуску</th>
+            <th>Місткість</th>
+            <th>Тип кузова</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>@item.Brand</td>
+            <td>@item.Year</td>
+            <td>@item.PassengerCapacity</td>
+            <td>@item.BodyType</td>
+        </tr>
+}
+    </tbody>
+</table>
