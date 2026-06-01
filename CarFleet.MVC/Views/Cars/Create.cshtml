@@ -1,0 +1,21 @@
+@model CarFleet.Infrastructure.Models.CarModel
+
+<form asp-action="Create" method="post">
+    <div>
+        <label>Бренд:</label>
+        <input asp-for="Brand" />
+    </div>
+    <div>
+        <label>Рік:</label>
+        <input asp-for="Year" />
+    </div>
+    <div>
+        <label>Місткість:</label>
+        <input asp-for="PassengerCapacity" />
+    </div>
+    <div>
+        <label>Тип кузова:</label>
+        <input asp-for="BodyType" />
+    </div>
+    <button type="submit">Зберегти</button>
+</form>
